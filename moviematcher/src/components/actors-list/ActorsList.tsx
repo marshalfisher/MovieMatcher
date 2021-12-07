@@ -20,6 +20,7 @@ const ActorsList:React.FC<Props>  = ({id}) => {
       async function fetchMovie () {
           setActorList(castArray)
           const actorListIDS = await APIService.getActorList(id);
+          console.log(actorListIDS);
           const filteredActorList = actorListIDS.cast.filter((actor, index, self) =>
             index === self.findIndex((selfActor) => selfActor.id === actor.id)
           );
