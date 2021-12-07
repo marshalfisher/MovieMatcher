@@ -49,8 +49,8 @@ const Navbar = () => {
         </>
       }
       </div>
-        <SearchBar />
       <div className="buttons">
+        <SearchBar />
         {auth && <Button className='enlarge-on-hover margin-right' onClick={() => dispatch(toggleFriendsList())}> Friends </Button>}
         {!auth && <Button className='enlarge-on-hover' onClick={() => dispatch(turnOnLogin())}> Login </Button>}
         {auth && <Button className='enlarge-on-hover' onClick={handleLogOut}>Log Out</Button>}

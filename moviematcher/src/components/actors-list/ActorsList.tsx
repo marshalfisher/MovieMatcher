@@ -30,7 +30,7 @@ const ActorsList:React.FC<Props>  = ({id}) => {
       }
       fetchMovie()
       return () => {
-        isCancelled = true;   
+        isCancelled = true;
       }
 
   }, [id])
