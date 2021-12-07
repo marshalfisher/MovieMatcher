@@ -41,16 +41,16 @@ const BlackAndWatchList = () => {
 useEffect(() => {
   if(id) return;
   let isCancelled = false;
-  const getBlackListedMovies = async() => {
-    let blackListedMovies = await Promise.all(blackListIds.map(async(id) => {
-          return await APIService.getIndividualMovie(id.toString())
-      }))
-      if(!isCancelled) {
-          setBlackListedMovies(blackListedMovies);
-      }
-  };
+  // const getBlackListedMovies = async() => {
+  //   let blackListedMovies = await Promise.all(blackListIds.map(async(id) => {
+  //         return await APIService.getIndividualMovie(id.toString())
+  //     }))
+  //     if(!isCancelled) {
+  //         //setBlackListedMovies(blackListedMovies);
+  //     }
+  // };
 
-  getBlackListedMovies();
+  // getBlackListedMovies();
   
   return () => {
       isCancelled = true;
