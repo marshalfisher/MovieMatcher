@@ -105,7 +105,7 @@ function App() {
       getUsername();
     }
   }, [accessToken])
- 
+
   return (
     <div className="App">
       <Navbar />
@@ -126,7 +126,7 @@ function App() {
       </div>
       <LoginForm />
       <CreateAccountForm />
-      <ToastContainer 
+      <ToastContainer
         position ='top-center'
         autoClose={30000}
         closeOnClick={false}
