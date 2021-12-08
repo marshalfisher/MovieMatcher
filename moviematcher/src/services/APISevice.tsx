@@ -139,7 +139,8 @@ const APIService = {
           'Content-Type': 'application/json',
         },
       });
-      return await movie.json()
+      const data = await movie.json()
+      return data
     }catch(e) {
       console.log(e);
       return movieDetailsPlaceHolder
@@ -170,7 +171,8 @@ const APIService = {
         },
       });
       const data = await streamProvider.json();
-      return data.results;
+      console.log(data, 'this is the data from inside gsp')
+      return data;
 
     }catch(err) {
       console.log(err)
@@ -193,7 +195,9 @@ const APIService = {
     }
   },
   getActorDetails: async(actorId:number): Promise<ActorDetailsInterface> => {
+    console.log('hit outside of try')
     try {
+      console.log("hit apiService")
       const actorDetails = await fetch((`${BASE_URL}/movies/ActorDetails?actor=${actorId}` ), {
         method: 'GET',
         mode: 'cors',
@@ -203,7 +207,7 @@ const APIService = {
       });
       return await actorDetails.json()
     }catch(e) {
-      console.log(e)
+      //console.log(e)
       return actorDetailsPlaceholder;
     }
   },

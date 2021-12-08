@@ -39,11 +39,12 @@ export const APIMovieService = {
   },
 
   getFilteredMoviesQuery: async(params: string)  => {
-    const movies = await axios.get('https://api.themoviedb.org/3/discover/movie?api_key=48343d08ec9aa87fbbfecd658bbc7ba9&language=en-US&include_adult=true&include_video=false' + params)
+    const movies = await axios.get('https://api.themoviedb.org/3/discover/movie?api_key=48343d08ec9aa87fbbfecd658bbc7ba9&language=en-US&include_adult=true&include_video=false&watch_region=US' + params)
     return movies.data;
   },
 
   getCastID: async(castString: string) => {
+    try{
     const cast = castString.trim().replace(' ', '%20');
     const castIDArr = await axios.get(`https://api.themoviedb.org/3/search/person?api_key=48343d08ec9aa87fbbfecd658bbc7ba9&language=en-US&query=${cast}&page=1&include_adult=false`)
     if(castIDArr.data.results.length === 0){
@@ -51,11 +52,19 @@ export const APIMovieService = {
     }
     const castID = castIDArr.data.results[0].id;
     return(castID);
+  }
+  catch(err){
+    console.log(err);
+  }
   },
 
   getMoviesBase: async() => {
+    try{
     const movies = await axios.get('https://api.themoviedb.org/3/discover/movie?api_key=48343d08ec9aa87fbbfecd658bbc7ba9&language=en-US&sort_by=popularity.desc&include_adult=true&include_video=false')
     return movies.data;
+    } catch(err){
+      console.log(err);
+    }
   },
 
   getIndividualMovie: async(id:string | number): Promise<IMovieDetails>  => {
@@ -101,7 +110,7 @@ export const APIMovieService = {
       return actorDetails.data//.json();
 
     }catch(e) {
-      console.log(e)
+     console.log(e)
       return actorDetailsPlaceholder;
     }
   },
@@ -118,9 +127,9 @@ export const APIMovieService = {
   getSpecificMovieQuery: async(id: number): Promise<IMovieDetails> => {
     try {
       const movie  = await axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=66be68e2d9a8be7fee88a803b45d654b&language=en`);
-      return movie;
+      return movie.data;
     } catch(err) {
-      console.log(err);
+     console.log(err);
       return movieDetailsPlaceHolder
     }
 
