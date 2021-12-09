@@ -2,7 +2,7 @@
     z-index: 100;
     position: sticky;
     top: 0;
-    height: 85px;
+    height: 'fit-content';
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -24,7 +24,7 @@ color:grey;
 }
 
 .navlink-item {
-    margin: 5vw;
+    margin: 2vw;
 }
 
 .buttons {
@@ -36,14 +36,11 @@ color:grey;
     margin:5px;
     background-color: rgb(59, 59, 143);
 }
-<<<<<<< HEAD
 
 .buttons button:hover {
     background-color:rgb(26, 26, 212) ;
 }
 
-=======
->>>>>>> 3d01abd3c620998113cdce4174a35a8303ce87fc
 .enlarge-on-hover.margin-right {
     margin-right: 40px;
 }

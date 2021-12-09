@@ -1,32 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import './friend-icon.css';
-<<<<<<< HEAD
 import { IUser } from '../../../../../interfaces/responses';
 import { useNavigate } from "react-router-dom";
 import { ServerApiService } from '../../../services/ServerApi';
 import { useAppSelector, useAppDispatch } from '../../../redux/app/hooks';
 import { selectAuth } from '../../../redux/features/modals/authSlice';
 import {setFriendIds} from '../../../redux/features/user/friendsIdSlice';
-=======
-import {IUser} from '../../../../../interfaces/userInterface';
-import { User } from '../../../../../interfaces/responses';
-import {  useNavigate } from "react-router-dom";
-import { ServerApiService } from '../../../services/ServerApi'
-import { useAppSelector, useAppDispatch } from '../../../redux/app/hooks'
-import { selectAuth } from '../../../redux/features/modals/authSlice'
-import {setFriendIds} from '../../../redux/features/user/friendsIdSlice'
->>>>>>> 3d01abd3c620998113cdce4174a35a8303ce87fc
 import { selectLoggedInUser } from '../../../redux/features/user/loggedInUsers';
-import { selectSocketRef } from '../../../redux/features/socket/socketRefSlice'
+import { selectSocketRef } from '../../../redux/features/socket/socketRefSlice';
 import { selectUserName } from '../../../redux/features/user/yourUserName';
 
 type Props = {
-    user: User,
+    user: IUser,
     friend: boolean,
-}
+};
 
 const FriendIcon:React.FC<Props> = ({user, friend}) => {
-<<<<<<< HEAD
 
   const username = useAppSelector(selectUserName);
   const accessToken = useAppSelector(selectAuth);
@@ -54,49 +43,6 @@ const FriendIcon:React.FC<Props> = ({user, friend}) => {
   const handleProfile = () => {
     navigate(`/profile/${user.id}`);
   };
-=======
-    // const [username, setUsername] = useState('')
-    const username = useAppSelector(selectUserName);
-    const accessToken = useAppSelector(selectAuth);
-    const navigate = useNavigate();
-    const dispatch = useAppDispatch();
-    const loggedInUsers = useAppSelector(selectLoggedInUser);
-    const socket = useAppSelector(selectSocketRef);
-    const handleMatch = () => {
-        socket.emit('invite', {room:`${username}+${user.username}`, otherUserName: user.username, username})
-    };
-
-    const handleAdd = async() => {
-        const friendsList = await ServerApiService.addFriend(accessToken, user.id);
-        let ids = friendsList.map((friend:User) => friend.id);
-        dispatch(setFriendIds(ids));
-    };
-    const handleRemove = async() => {
-        const friendsList = await ServerApiService.removeFriend(accessToken, user.id);
-        let ids = friendsList.map((friend:User) => friend.id);
-        dispatch(setFriendIds(ids));
-    }
-    const handleProfile = () => {
-        navigate(`/profile/${user.id}`);
-    };
-
-    const determinePicture = () =>{
-      if (user.profile_pic === 'https://upload.wikimedia.org/wikipedia/commons/f/f4/User_Avatar_2.png') {
-          return user.profile_pic
-      } else return `http://localhost:3001${user.profile_pic}`
-    }
-
-    // useEffect(() => {
-    //   async function getUsername () {
-    //     const info = await ServerApiService.getUser(accessToken);
-    //     setUsername(info.username);
-    //   }
-    //   if(accessToken){
-    //       console.log('called')
-    //       getUsername();
-    //   }
-    // }, [accessToken]);
->>>>>>> 3d01abd3c620998113cdce4174a35a8303ce87fc
 
   const determinePicture = () =>{
     if (user.profile_pic === 'https://upload.wikimedia.org/wikipedia/commons/f/f4/User_Avatar_2.png') {
@@ -115,15 +61,10 @@ const FriendIcon:React.FC<Props> = ({user, friend}) => {
           {!friend && <button onClick={handleAdd}>Add</button>}
           <button onClick={handleProfile}>Profile</button>
         </div>
-<<<<<<< HEAD
       </div>
       <div className={loggedInUsers.includes(user.username) ?  "online-status" : 'offline-status'}></div>
     </div>
   );
 };
-=======
-    )
-}
->>>>>>> 3d01abd3c620998113cdce4174a35a8303ce87fc
 
-export default FriendIcon
+export default FriendIcon;

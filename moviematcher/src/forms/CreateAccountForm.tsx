@@ -21,26 +21,23 @@ import { selectCreateAccount, turnOffCreateAccount } from '../redux/features/mod
 import { useAppSelector, useAppDispatch } from '../redux/app/hooks';
 import { turnOnLogin } from '../redux/features/modals/loginSlice';
 import { ServerApiService } from '../services/ServerApi';
-import { setToken, selectAuth } from '../redux/features/modals/authSlice';
+import { setToken } from '../redux/features/modals/authSlice';
 import { setUserId } from '../redux/features/user/userIdSlice';
 
 const CreateAccountForm = () => {
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [pic, setPic] = useState<File>()
+  const [pic, setPic] = useState<File>();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const open = useAppSelector(selectCreateAccount);
-  const token = useAppSelector(selectAuth)
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   
   useEffect(() => {
     if(open) {
       onOpen()
     }
-  }, [open])
-
-
+  }, [open]);
 
   const handleSubmit = async(e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -57,23 +54,17 @@ const CreateAccountForm = () => {
       }
       dispatch(setUserId(user.id));
       handleClose();
-<<<<<<< HEAD
     } else {
       alert('invalid username or password');
-=======
-    }else {
-      alert('invalid username or password')
->>>>>>> 3d01abd3c620998113cdce4174a35a8303ce87fc
     }
 
     setUserName('');
     setEmail('');
     setPassword('');
-    }
+  };
 
   const handleClose = () => {
     dispatch(turnOffCreateAccount());
-<<<<<<< HEAD
     onClose();
   };
 
@@ -96,31 +87,6 @@ const CreateAccountForm = () => {
                     pointerEvents="none"
                     children={<FaUserAlt />}
                   />
-=======
-    onClose()
-  }
-
-
-    return (
-      <DarkMode >
-      <Modal isOpen={isOpen}  onClose = {handleClose} isCentered>
-      <ModalOverlay/>
-      <ModalContent style={{borderRadius:'2rem', color:'white'}}>
-      <ModalHeader bgColor='rgb(0, 0, 92)' color='white'  style={{display:'flex', flexDirection:'column', 
-                    justifyContent:'center', alignItems:'center', borderTopLeftRadius:'2rem', borderTopRightRadius:'2rem'}}>
-              <Avatar size='lg' bg='rgb(0, 0, 92)'/>
-              <div> Create Account! </div>
-      </ModalHeader >
-      <form onSubmit = {(e:React.FormEvent<HTMLFormElement>) => handleSubmit(e)}>
-        <ModalBody pb={6}>
-            <FormControl isRequired>
-                <FormLabel forhtml='email-address'>Email Address  </FormLabel>
-                <InputGroup>
-                  <InputLeftElement
-                      pointerEvents="none"
-                      children={<FaUserAlt />}
-                    />
->>>>>>> 3d01abd3c620998113cdce4174a35a8303ce87fc
                   <Input 
                     autoFocus
                     errorBorderColor="red.300"  
@@ -135,15 +101,9 @@ const CreateAccountForm = () => {
                 <FormLabel forhtml='userName'>User Name </FormLabel>
                 <InputGroup>
                   <InputLeftElement
-<<<<<<< HEAD
                     pointerEvents="none"
                     children={<FaUserTag color="gray.300" />}
                   />
-=======
-                      pointerEvents="none"
-                      children={<FaUserTag color="gray.300" />}
-                    />
->>>>>>> 3d01abd3c620998113cdce4174a35a8303ce87fc
                   <Input 
                     type='text'
                     errorBorderColor="red.300"  
@@ -189,16 +149,9 @@ const CreateAccountForm = () => {
             </ModalFooter>
           </form>
         </ModalContent>
-<<<<<<< HEAD
       </Modal>
     </DarkMode>
   );
 };
-=======
-    </Modal>
-    </DarkMode>
-    )
-}
->>>>>>> 3d01abd3c620998113cdce4174a35a8303ce87fc
 
 export default CreateAccountForm;

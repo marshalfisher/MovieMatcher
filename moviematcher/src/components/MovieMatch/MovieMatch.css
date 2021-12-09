@@ -13,8 +13,7 @@
 }
 .movie-match-buttons {
     display: flex;
-    justify-content: space-around;
-    width: 50vw;
+    justify-content: center;
 }
 .movie-rating-button {
     display: flex;

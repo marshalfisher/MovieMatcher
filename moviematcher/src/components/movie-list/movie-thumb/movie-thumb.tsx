@@ -1,6 +1,6 @@
 import React from 'react'
 import './movie-thumb.css'
-import { Movie } from '../../../../../interfaces/MovieInterface'
+import { IMovie } from '../../../../../interfaces/movieInterface'
 import {Button} from '@chakra-ui/react'
 import StarRatings from 'react-star-ratings';
 import {  useNavigate } from "react-router-dom";
@@ -10,18 +10,13 @@ import { useAppSelector, useAppDispatch } from '../../../redux/app/hooks';
 import { selectAuth } from '../../../redux/features/modals/authSlice';
 import { selectFavoriteMovieIds, setFavoriteMovieIds, removeFavoriteMovieIds } from '../../../redux/features/user/watchListIds'
 import { selectBlackListIds, setBlackListIds, removeBlackListIds } from '../../../redux/features/user/blackListids';
-import { MovieDetailsInterface } from '../../../../../interfaces/MovieDetails'
+import { IMovieDetails } from '../../../../../interfaces/MovieDetails'
 import { setActivities } from '../../../redux/features/user/activitiesSlice';
 
 type Props = {
-<<<<<<< HEAD
   movie:IMovie | IMovieDetails;
 };
 
-=======
-  movie:Movie | MovieDetailsInterface;
-}
->>>>>>> 3d01abd3c620998113cdce4174a35a8303ce87fc
 const MovieThumb:React.FC<Props> = ({movie}) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -64,7 +59,6 @@ const MovieThumb:React.FC<Props> = ({movie}) => {
         }
         blackList = await ServerApiService.addToBlackList(accessToken, movie.id);
       }
-<<<<<<< HEAD
       let ids = blackList.map((movie) => movie.movieid)
       const activities = await ServerApiService.getActivities(accessToken);
       dispatch(setActivities(activities));
@@ -107,48 +101,5 @@ const MovieThumb:React.FC<Props> = ({movie}) => {
     </div>
   );
 };
-=======
-      blackList = await ServerApiService.addToBlackList(accessToken, movie.id);
-    }
-    let ids = blackList.map((movie) => movie.movieid)
-    const activities = await ServerApiService.getActivities(accessToken);
-    dispatch(setActivities(activities));
-    dispatch(setBlackListIds(ids));
-  }
-    return (
-        <div className="movie-thumb">
-            <div className='movie-thumb-img-background'>
-              <p className='movie-thumb-title'> {movie.title}</p>
-              <StarRatings
-                  rating={reduceToFiveStarRating(movie.vote_average)}
-                  starDimension="20px"
-                  starSpacing="1px"
-                  starRatedColor='gold' />
-              <Button style={{backgroundColor:'transparent'}}
-                     className='btn hidden-background enlarge-on-hover'
-                     onClick={() => {
-                      navigate(`/movieDetails/${movie.id}`)
-                     }}>
-                     More Details
-              </Button>
-              <Button style={{backgroundColor:'transparent'}}
-                      className='enlarge-on-hover'
-                      onClick={handleAddToWatchList}
-                      >
-                    {favoriteMovieIds.includes(movie.id) ? <FaTimes color='red' /> : <FaPlus color='green'/>}
-                     <span style={{fontStyle:'italic', marginLeft:'5px'}}>{favoriteMovieIds.includes(movie.id) ? 'Remove Wantlist' :'Want to Watch' } </span>
-              </Button>
-              <Button style={{backgroundColor:'transparent'}}
-                      className='enlarge-on-hover'
-                      onClick={handleBlackList}>
-                    { blackListIds.includes(movie.id) ? <FaMinus color='red'/> : <FaSkull color='red' /> }
-                    <span style={{fontStyle:'italic', marginLeft:'5px'}}>{blackListIds.includes(movie.id) ? 'Remove Blacklist' : 'Add to BlackList'}</span>
-              </Button>
-            </div>  
-            <img className='movie-thumb-img' src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt='movie poster' />   
-        </div>
-    )
-}
->>>>>>> 3d01abd3c620998113cdce4174a35a8303ce87fc
 
 export default MovieThumb;

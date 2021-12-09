@@ -1,42 +1,45 @@
-import React, {useState, useEffect} from 'react';
+import {useState, useEffect} from 'react';
 import { useAppSelector } from '../redux/app/hooks';
 import { selectFavoriteMovieIds } from '../redux/features/user/watchListIds';
 import { selectBlackListIds } from '../redux/features/user/blackListids';
-import { MovieDetailsInterface } from '../../../interfaces/MovieDetails';
+import { IMovieDetails } from '../../../interfaces/MovieDetails';
 import  APIService  from '../services/APISevice';
 import FavoriteMovieList from './FavoriteMovieList'
 import { useParams } from 'react-router';
 import { ServerApiService } from '../services/ServerApi';
 import { selectAuth } from '../redux/features/modals/authSlice';
+
 const BlackAndWatchList = () => {
+
   const favoriteMovieIds = useAppSelector(selectFavoriteMovieIds);
   const blackListIds = useAppSelector(selectBlackListIds);
   const accessToken = useAppSelector(selectAuth);
-  const [watchListMovies, setWatchListMovies] = useState<MovieDetailsInterface[]>([]);
-  const [blackListedMovies, setBlackListedMovies] = useState<MovieDetailsInterface[]>([]);
+  const [watchListMovies, setWatchListMovies] = useState<IMovieDetails[]>([]);
+  const [blackListedMovies, setBlackListedMovies] = useState<IMovieDetails[]>([]);
   const [profileName, setProfileName] = useState('')
   const { id } : any = useParams();
+
   useEffect(() => {
-    if(id) return
+    if(id) return;
     let isCancelled = false;
     const getFavoriteMovies = async() => {
       let favoriteMovies = await Promise.all(favoriteMovieIds.map(async(id) => {
-            return await APIService.getIndividualMovie(id.toString())
+          return await APIService.getIndividualMovie(id.toString())
         }))
         if(!isCancelled) {
-            setWatchListMovies(favoriteMovies);
-        }
-    }
+          setWatchListMovies(favoriteMovies);
+        };
+    };
     getFavoriteMovies();
     
     return () => {
         isCancelled = true;
     }
 
-}, [favoriteMovieIds, id])
+}, [favoriteMovieIds, id]);
 
 useEffect(() => {
-  if(id) return
+  if(id) return;
   let isCancelled = false;
 
   const getBlackListedMovies = async() => {
@@ -47,14 +50,15 @@ useEffect(() => {
       if(!isCancelled) {
         setBlackListedMovies(blackListedMovies);
       }
-  }
+  };
+
   getBlackListedMovies();
   
   return () => {
       isCancelled = true;
   }
 
-}, [blackListIds, id])
+}, [blackListIds, id]);
 
 useEffect(() => {
   if(!id) return
@@ -70,17 +74,18 @@ useEffect(() => {
     if(!isCancelled) {
       setWatchListMovies(favoriteMovies);
     }
-  }
+  };
+
   getOtherUserFavMovies();
   
   return () => {
     isCancelled = true;
   }
 
-}, [id])
+}, [id]);
 
 useEffect(() => {
-  if(!id) return
+  if(!id) return;
   let isCancelled = false;
 
   const getOtherUserBlackListMovies = async() => {
@@ -92,8 +97,8 @@ useEffect(() => {
 
     if(!isCancelled) {
       setBlackListedMovies(favoriteMovies);
-    }
-  }
+    };
+  };
 
   const getOtherUserInfo = async() =>  {
     const info = await ServerApiService.getSpecificUser(accessToken, id);
@@ -109,7 +114,7 @@ useEffect(() => {
     isCancelled = true;
   };
 
-}, [id])
+}, [id]);
 
   return (
     <>

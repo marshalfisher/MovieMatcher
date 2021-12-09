@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { Button } from '@chakra-ui/button';
-import { MovieDetailsInterface } from '../../../../../interfaces/MovieDetails';
+import { IMovieDetails } from '../../../../../interfaces/MovieDetails';
 import {useAppDispatch, useAppSelector} from '../../../redux/app/hooks';
 import { selectAuth } from '../../../redux/features/modals/authSlice';
 import { selectFavoriteMovieIds, setFavoriteMovieIds, removeFavoriteMovieIds } from '../../../redux/features/user/watchListIds';
@@ -10,29 +10,26 @@ import { FaPlus, FaMinus, FaTimes, FaSkull} from 'react-icons/fa';
 import { selectRatings, removeRating } from '../../../redux/features/user/ratingsSlice';
 import StarRatings from 'react-star-ratings';
 import { setActivities } from '../../../redux/features/user/activitiesSlice';
+require('./ButtonHolder.css');
+
 type Props = {
-  movie:MovieDetailsInterface
+  movie:IMovieDetails,
+  setRatingModalToggle?:any,
+  setNewRating?: any,
+  flexColumn?: boolean,
 }
-<<<<<<< HEAD
 
 const ButtonHolder: React.FC<any>  = ({movie, setRatingModalToggle, setWatchedMovies, watchedMovies, flexColumn }) => {
 
-=======
-const ButtonHolder: React.FC<any>  = ({movie, setRatingModalToggle}) => {
-  const dispatch = useAppDispatch();
->>>>>>> 3d01abd3c620998113cdce4174a35a8303ce87fc
   const accessToken = useAppSelector(selectAuth);
   const favoriteMovieIds = useAppSelector(selectFavoriteMovieIds);
   const blackListIds = useAppSelector(selectBlackListIds);
   const userRatings = useAppSelector(selectRatings);
-<<<<<<< HEAD
   const [watchedMovieToggle, setWatchedMovieToggle] = useState<boolean>(false);
   const [watchedMovieDateToggle, setWatchedMovieDateToggle] = useState<boolean>(false);
   const [watchDate, setWatchDate] = useState<Date>(new Date(Date.now()))
   const dispatch = useAppDispatch();
 
-=======
->>>>>>> 3d01abd3c620998113cdce4174a35a8303ce87fc
   const handleAddToWatchList = async() => {
     try{
       let watchList;
@@ -85,7 +82,6 @@ const ButtonHolder: React.FC<any>  = ({movie, setRatingModalToggle}) => {
   };
 
   const handleDeleteRating = async () => {
-<<<<<<< HEAD
     try {
       ServerApiService.removeRating(accessToken, movie.id)
       const activities = await ServerApiService.getActivities(accessToken);
@@ -118,41 +114,48 @@ const ButtonHolder: React.FC<any>  = ({movie, setRatingModalToggle}) => {
     };
   };
 
-=======
-    ServerApiService.removeRating(accessToken, movie.id)
-    const activities = await ServerApiService.getActivities(accessToken);
-    dispatch(setActivities(activities));
-    dispatch(removeRating(movie.id))
-  }
->>>>>>> 3d01abd3c620998113cdce4174a35a8303ce87fc
   return (
-    <div className='movie-details-button-holder' style={{marginTop: "1.5rem"}}>
-      <Button 
+    <div className={`movie-details-button-holder ${flexColumn ? 'column': ''}`} style={{margin: "1.5rem 0"}}>
+      <Button
         style={{backgroundColor:'transparent'}}
         className='enlarge-on-hover'
         onClick={handleAddToWatchList}
       >
         {favoriteMovieIds.includes(movie.id) ? <FaTimes color='red' /> : <FaPlus color='green'/>}
-        <span style={{fontStyle:'italic', marginLeft:'5px'}}>{favoriteMovieIds.includes(movie.id) ? 'No Longer Interested' :'Want to Watch' } </span>
+        <span style={{fontStyle:'italic'}}>{favoriteMovieIds.includes(movie.id) ? 'Remove Wantlist' :'Want to Watch' } </span>
       </Button>
       <Button
         style={{backgroundColor:'transparent'}}
         className='enlarge-on-hover'
         onClick={handleBlackList}>
         { blackListIds.includes(movie.id) ? <FaMinus color='red'/> : <FaSkull color='red' /> }
-        <span style={{fontStyle:'italic', marginLeft:'5px'}}>{blackListIds.includes(movie.id) ? 'Remove Blacklist' : 'Add to BlackList'}</span>
+        <span style={{fontStyle:'italic'}}>{blackListIds.includes(movie.id) ? 'Remove Blacklist' : 'Blacklist It'}</span>
       </Button>
-      {checkRatings() 
-        ? <Button title="click to delete rating" onClick={handleDeleteRating}>
-          You rated: 
-          <StarRatings 
+      {checkRatings()
+        ? <Button style={{backgroundColor:'transparent'}} title="click to delete rating" className="enlarge-on-hover" onClick={handleDeleteRating}>
+          You rated:
+          <StarRatings
             rating={checkRatings()}
-            starDimension="1.5rem"
+            starDimension="1.25rem"
             starSpacing="1px"
             starRatedColor='gold'
           />
-          </Button> 
-        : <Button onClick={() => setRatingModalToggle(true)}>Rate</Button>}
+          </Button>
+        : <Button style={{backgroundColor:'transparent'}} onClick={() => setRatingModalToggle(true)}>Rate</Button>
+      }
+
+     { flexColumn ? <></> :  watchedMovieToggle
+      ? watchedMovieDateToggle
+        ? <div className="date-form" style={{display: "flex"}}>
+          <input className='enlarge-on-hover' type="datetime-local" onChange={(e) => updateWatchDate(e)}></input>
+          <Button type="submit" style={{backgroundColor:'transparent', marginLeft: "0.5rem"}} className='enlarge-on-hover' onClick={updateWatchedMovie}>Save</Button>
+        </div>
+        : <div style={{display: "flex"}}>
+          <Button style={{backgroundColor:'transparent'}} className='enlarge-on-hover' onClick={updateWatchedMovie}>Today</Button>
+          <Button style={{backgroundColor:'transparent'}} className='enlarge-on-hover' onClick={() => setWatchedMovieDateToggle(true)}>Other</Button>
+        </div>
+      : <Button style={{backgroundColor:'transparent'}} className='enlarge-on-hover' onClick={() => setWatchedMovieToggle(true)}>Watched It</Button>
+      }
     </div>
   );
 };

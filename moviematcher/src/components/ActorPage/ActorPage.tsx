@@ -1,12 +1,14 @@
 import MovieList from '../movie-list/movie-list';
 import  {useState, useEffect} from 'react';
 import APIService from '../../services/APISevice';
-import { Movie } from '../../../../interfaces/MovieInterface';
+import { IMovie } from '../../../../interfaces/movieInterface';
 import { useParams } from 'react-router';
 import ActorDetails from './ActorDetails/ActorDetails'
+
 const ActorPage = () => {
   const { id } : any = useParams();
-  const [combinedMovies, setCombinedMovies] = useState<Movie[]>([]);
+  const [combinedMovies, setCombinedMovies] = useState<IMovie[]>([]);
+
   useEffect(() => {
     let isCancelled = false;
     async function fetchPopular () {
@@ -15,7 +17,6 @@ const ActorPage = () => {
         if(!isCancelled) {
           setCombinedMovies(fetchedCombinedMovies)
         }
-<<<<<<< HEAD
       } catch (e) {
         console.error(e)
       };
@@ -35,20 +36,5 @@ const ActorPage = () => {
     </div>
   );
 };
-=======
-    }
-    fetchPopular()
-    return () => {
-        isCancelled = true;
-    }
-  }, [id])
-    return (
-        <div>
-            <ActorDetails />
-            <MovieList criteria = 'Also Starred In' movieList = {combinedMovies} />
-        </div>
-    )
-}
->>>>>>> 3d01abd3c620998113cdce4174a35a8303ce87fc
 
 export default ActorPage;
