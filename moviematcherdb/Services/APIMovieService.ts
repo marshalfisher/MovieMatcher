@@ -1,4 +1,5 @@
 const axios = require('axios');
+<<<<<<< HEAD
 import { IMovie, IResults } from "../../interfaces/movieInterface";
 import {IMovieDetails} from '../../interfaces/MovieDetails'
 import { movieDetailsPlaceHolder } from '../../moviematcher/src/moviePlaceholder'
@@ -7,6 +8,9 @@ import { actorListPlaceholder } from '../../moviematcher/src/actorListPlaceholde
 import  ActorDetailsInterface  from '../../interfaces/ActorDetails';
 import { actorDetailsPlaceholder } from '../../moviematcher/src/actorDetailsPlaceholder';
 import { IStreamProvider, IStreamProviders } from '../../interfaces/StreamProviders';
+=======
+import { Movie, Results } from "../../interfaces/movieInterface";
+>>>>>>> 3d01abd3c620998113cdce4174a35a8303ce87fc
 
 export const APIMovieService = {
   fetchMovie: async (id: number) =>{
@@ -18,33 +22,37 @@ export const APIMovieService = {
     }
   },
 
-  getPopularMovies: async(): Promise<IResults> => {
+  getPopularMovies: async(): Promise<Results> => {
     try {
       const popularMovies = await axios.get('https://api.themoviedb.org/3/discover/movie/?api_key=66be68e2d9a8be7fee88a803b45d654b&watch_region=US&with_watch_providers=10')
-      return  popularMovies.data;//.json();
+      return await popularMovies;//.json();
     } catch (e) {
       console.log(e);
       return {results:[]};
     }
   },
 
-  getUpcomingMovies: async(): Promise<IResults> => {
+  getUpcomingMovies: async(): Promise<Results> => {
     try {
       const latestMovies = await axios.get('https://api.themoviedb.org/3/movie/now_playing?api_key=66be68e2d9a8be7fee88a803b45d654b&language=en-US&page=1')
-      return latestMovies.data;//.json();
+      return await latestMovies;//.json();
     } catch (e) {
       console.log(e);
       return {results:[]};
     }
   },
 
+<<<<<<< HEAD
   getFilteredMoviesQuery: async(params: string)  => {
     const movies = await axios.get('https://api.themoviedb.org/3/discover/movie?api_key=48343d08ec9aa87fbbfecd658bbc7ba9&language=en-US&include_adult=true&include_video=false&watch_region=US' + params)
+=======
+  getFileredMovies: async(params: string)  => {
+    const movies = await axios.get('https://api.themoviedb.org/3/discover/movie?api_key=48343d08ec9aa87fbbfecd658bbc7ba9&language=en-US&include_adult=true&include_video=false' + params)
+>>>>>>> 3d01abd3c620998113cdce4174a35a8303ce87fc
     return movies.data;
   },
 
   getCastID: async(castString: string) => {
-    try{
     const cast = castString.trim().replace(' ', '%20');
     const castIDArr = await axios.get(`https://api.themoviedb.org/3/search/person?api_key=48343d08ec9aa87fbbfecd658bbc7ba9&language=en-US&query=${cast}&page=1&include_adult=false`)
     if(castIDArr.data.results.length === 0){
@@ -52,16 +60,12 @@ export const APIMovieService = {
     }
     const castID = castIDArr.data.results[0].id;
     return(castID);
-  }
-  catch(err){
-    console.log(err);
-  }
   },
 
   getMoviesBase: async() => {
-    try{
     const movies = await axios.get('https://api.themoviedb.org/3/discover/movie?api_key=48343d08ec9aa87fbbfecd658bbc7ba9&language=en-US&sort_by=popularity.desc&include_adult=true&include_video=false')
     return movies.data;
+<<<<<<< HEAD
   } catch(err){
     console.log(err);
   }
@@ -141,6 +145,8 @@ export const APIMovieService = {
     console.log(err);
       return []
     }
+=======
+>>>>>>> 3d01abd3c620998113cdce4174a35a8303ce87fc
   }
 }
 

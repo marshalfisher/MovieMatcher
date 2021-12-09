@@ -15,17 +15,21 @@ import { useAppDispatch, useAppSelector } from './redux/app/hooks';
 import { ServerApiService } from './services/ServerApi';
 import { selectAuth } from './redux/features/modals/authSlice';
 import { setFriendIds } from './redux/features/user/friendsIdSlice';
-import { IUser } from '../../interfaces/responses';
+import { User } from '../../interfaces/responses';
 import { setFavoriteMovieIds } from './redux/features/user/watchListIds';
 import { setBlackListIds } from './redux/features/user/blackListids';
+import io, { Socket } from 'socket.io-client';
 import { setLoggedInUser} from './redux/features/user/loggedInUsers';
-import { setSocketRef } from './redux/features/socket/socketRefSlice';
+import { setSocketRef, selectSocketRef } from './redux/features/socket/socketRefSlice';
 import { useNavigate } from 'react-router-dom';
 import  MovieMatch  from './components/MovieMatch/MovieMatch'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { setRatings } from './redux/features/user/ratingsSlice';
+import { selectMovieFilter, turnOnMovieFilter } from './redux/features/modals/movieFilterSlice';
+import FilterForm from './forms/filterForm';
 import { setActivities } from './redux/features/user/activitiesSlice';
+<<<<<<< HEAD
 import { setUserName } from './redux/features/user/yourUserName';
 import {socket} from './socket'
 import {IFilterData} from '../../interfaces/filterFormInterface';
@@ -34,11 +38,30 @@ import StreamingServiceList from './components/streaming-services/StreamingServi
 import StreamingMovies from './components/streaming-services/StreamingMovies';
 
 
+=======
+import { setUserName } from './redux/features/user/yourUserName'
+>>>>>>> 3d01abd3c620998113cdce4174a35a8303ce87fc
 function App() {
   const dispatch = useAppDispatch();
   const accessToken = useAppSelector(selectAuth);
   const navigate = useNavigate();
+  const socketRef = useRef<Socket<ServerToClientEvents, ClientToServerEvents>>();
   const toastRef = useRef<ReactText>('');
+  interface ServerToClientEvents {
+    noArg: () => void;
+    basicEmit: (a: number, b: string, c: Buffer) => void;
+    withAck: (d: string, callback: (e: number) => void) => void;
+    message: () => void;
+    loggedInUsers: (loggedInUsers:string[]) => void;
+    invite: (room:string, otherUserName:string, username:string) => void;
+    accepted: (room:string) => void;
+    denied: (room:string) => void;
+  }
+  interface ClientToServerEvents {
+    login: (username:string) => void;
+    accepted: (room:string) => void;
+  }
+  
 
   useEffect(() => {
     document.title = "Movie Matcher"
@@ -46,30 +69,32 @@ function App() {
     if(accessToken) {
       const getYourUserInfo = async() => {
         let yourUserInfo =  await ServerApiService.getUser(accessToken);
-        socket.emit('login',  yourUserInfo.username);
-        socket.on('loggedInUsers', (loggedInUsers:string[]) => {
+        socketRef.current = io('http://localhost:3001',  { transports : ['websocket'] });  
+        socketRef.current.emit('login',  yourUserInfo.username);
+        socketRef.current.on('loggedInUsers', (loggedInUsers:string[]) => {
           dispatch(setLoggedInUser(loggedInUsers));
         })
-        socket.on('invite', (room:string, otherUserName:string, username ) => {
+        socketRef.current.on('invite', (room:string, otherUserName:string, username ) => {
           const openToast = () => toastRef.current = toast(<InviteToast room={room} toastRef = {toastRef.current} otherUserName={username}/>)
             openToast();
         })
-        socket.on('denied', (room:string) => {
-          toast('Your request got denied')
+        socketRef.current.on('denied', (room:string) => {
+          toast('You got denied bitch')
         })
-        socket.on('accepted', (room:string) => {
+        socketRef.current.on('accepted', (room:string) => {
           navigate(`/movieMatch/${room}`)
         })
-        dispatch(setSocketRef(socket))
+        dispatch(setSocketRef(socketRef.current))
       }
       getYourUserInfo()
     }
   }, [accessToken]);
 
+
   useEffect(() => {
     const fetchFriends = async() => {
      let userFriends = await ServerApiService.getFriends(accessToken);
-     let ids = userFriends.map((friend:IUser) => friend.id);
+     let ids = userFriends.map((friend:User) => friend.id);
      dispatch(setFriendIds(ids));
     }
     const fetchFavoriteMovies = async() => {
@@ -83,12 +108,10 @@ function App() {
       dispatch(setBlackListIds(ids));
     }
     const fetchRatings = async() => {
-      console.log('hit fetch ratings')
       let ratingsFull = await ServerApiService.getUserRatings(accessToken);
       let ratings = ratingsFull.map(rating => {
         return {rating: rating.rating, movieid: rating.movieid}
       })
-      console.log(ratings);
       dispatch(setRatings(ratings))
     }
     const fetchActivities = async() => {
@@ -98,7 +121,6 @@ function App() {
     async function getUsername () {
       const info = await ServerApiService.getUser(accessToken);
       dispatch(setUserName(info.username));
-      dispatch(setUserStreaming(info.streaming));
     }
     if(accessToken) {
       fetchFriends();
@@ -108,29 +130,38 @@ function App() {
       fetchActivities();
       getUsername();
     }
-  }, [accessToken])
-
+  }, [accessToken]);
+ 
   return (
     <div className="App">
       <Navbar />
       <FriendsList />
       <Routes>
           <Route path='/' element={<Home /> } />
+<<<<<<< HEAD
           <Route path='/recent' element={<RecentActivity profile={false}/>} />
           <Route path='/recent/:movieId/:otherUserName' element={<RecentActivity profile={false}/>} />
+=======
+          <Route path='/recent' element={<RecentActivity />} />
+          <Route path='/profile' element={<ProfilePage />} />
+>>>>>>> 3d01abd3c620998113cdce4174a35a8303ce87fc
           <Route path='/movieDetails/:id' element={<MoviePage />} />
           <Route path='/actorDetails/:id' element = {<ActorPage />} />
           <Route path='/profile/:id' element = {<ProfilePage />} />
           <Route path ='/movieMatch/:room' element = {<MovieMatch />} />
+<<<<<<< HEAD
           <Route path ='/streaming' element = {<StreamingServiceList />} />
           <Route path ='/movies/:provider/:id' element = {<StreamingMovies />} />
+=======
+>>>>>>> 3d01abd3c620998113cdce4174a35a8303ce87fc
       </Routes>
       <div className="outlet">
         <Outlet />
       </div>
       <LoginForm />
       <CreateAccountForm />
-      <ToastContainer
+      <FilterForm />
+      <ToastContainer 
         position ='top-center'
         autoClose={30000}
         closeOnClick={false}

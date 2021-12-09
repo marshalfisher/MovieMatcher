@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .invite-toast button {
     /* margin:5px; */
     background-color: rgb(59, 59, 143);
@@ -12,4 +13,9 @@
 .toast-button-container {
     display: flex;
     justify-content: space-around;
+=======
+.invite-toast button{
+    margin:5px;
+    background-color: rgb(59, 59, 143);
+>>>>>>> 3d01abd3c620998113cdce4174a35a8303ce87fc
 }

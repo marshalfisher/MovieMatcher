@@ -49,13 +49,17 @@ async function movieWatchCount (req:RequestInstance,res:Response) {
   }
 }
 
-async function getFileredMovies (req:RequestInstance,res:Response) {
+async function APIServiceHandler (req:RequestInstance,res:Response) {
   try{
   let params = '';
 
   if((req.originalUrl.split('?')[1]) !== undefined) {
     params = '&' + (req.originalUrl.split('?')[1]);
   }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3d01abd3c620998113cdce4174a35a8303ce87fc
   if(req.body.cast){
     let cast = req.body.cast;
     let castIDStr = '';
@@ -68,8 +72,9 @@ async function getFileredMovies (req:RequestInstance,res:Response) {
   }
 
   let movies = {};
+
   if(params !== undefined) {
-    movies = await APIMovieService.getFilteredMoviesQuery(params);
+    movies = await APIMovieService.getFileredMovies(params);
   } else {
      movies = await APIMovieService.getMoviesBase();  //base case if no params/cast are passed
   }
@@ -81,6 +86,7 @@ catch (err:any) {
 }
 }
 
+<<<<<<< HEAD
 async function getPopularMovies(req:RequestInstance,res:Response) {
   try{
     const movies = await APIMovieService.getPopularMovies();
@@ -209,10 +215,13 @@ async function getAllStreamProviders(req:Request,res:Response) {
   }
 }
 
+=======
+>>>>>>> 3d01abd3c620998113cdce4174a35a8303ce87fc
 module.exports = {
   getWatchedMovie,
   addWatchedMovie,
   movieWatchCount,
+<<<<<<< HEAD
   getFileredMovies,
   getPopularMovies,
   getUpcomingMovies,
@@ -223,4 +232,7 @@ module.exports = {
   getCombinedCredits,
   getIndividualMovie,
   getAllStreamProviders
+=======
+  APIServiceHandler
+>>>>>>> 3d01abd3c620998113cdce4174a35a8303ce87fc
 }

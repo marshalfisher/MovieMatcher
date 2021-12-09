@@ -1,7 +1,7 @@
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react'
 import { useAppSelector, useAppDispatch } from '../../redux/app/hooks';
 import { selectSocketRef } from '../../redux/features/socket/socketRefSlice';
-import { IMovie } from '../../../../interfaces/movieInterface';
+import { Movie } from '../../../../interfaces/MovieInterface';
 import { useParams } from 'react-router';
 import { Button } from '@chakra-ui/button';
 import { moviePlaceholder } from '../../moviePlaceholder';
@@ -12,7 +12,7 @@ import { turnOnMovieFilter } from '../../redux/features/modals/movieFilterSlice'
 import { turnOnMatchedMovie, turnOffMatchedMovie } from '../../redux/features/modals/matchedMovie';
 import MatchedMovieModal from './MatchedMovieModal/MatchedMovieModal';
 import { selectUserName } from '../../redux/features/user/yourUserName';
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from 'react-router';
 import { setRoomName } from '../../redux/features/modals/roomNameSlice';
 import FilterForm from '../../forms/filterForm';
@@ -23,16 +23,16 @@ const MovieMatch = () => {
   const { room } = useParams();
   const socket = useAppSelector(selectSocketRef);
   const userName = useAppSelector(selectUserName);
-  const [otherUserName, setOtherUserName] = useState('');
-  const [movies, setMovies] = useState<IMovie[]>([]);
-  const [currentMovie, setCurrentMovie] = useState<IMovie>(moviePlaceholder);
-  const [matchedMovie, setMatchedMovie] = useState<IMovie>(moviePlaceholder);
-  const [acceptedMovies, setAcceptedMovie] = useState<IMovie[]>([]);
+  const [otherUserName, setOtherUserName] = useState('')
+  const [movies, setMovies] = useState<Movie[]>([]);
+  const [currentMovie, setCurrentMovie] = useState<Movie>(moviePlaceholder);
+  const [matchedMovie, setMatchedMovie] = useState<Movie>(moviePlaceholder);
+  const [acceptedMovies, setAcceptedMovie] = useState<Movie[]>([]);
   const [bothAccept, setBothAccept] = useState(false);
   const [showOtherFriendAccept, setshowOtherFriendAccept] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
+  
   useEffect(()=>{
     if (room) {dispatch(setRoomName(room));
     dispatch(turnOnMovieFilter());
@@ -81,13 +81,14 @@ const MovieMatch = () => {
     if (newList) {
       setMovies(newList);
       setCurrentMovie(newList[0]);
-    };
-  };
+    }
+  }
+  
   //acceptedMovies.filter(movie => movie.title === currentMovie.title).length > 0
 
   const handleAccept = () => {
     if (acceptedMovies.filter(movie => movie.title === currentMovie.title).length > 0) {
-      socket.emit('foundMutualMovie', room, currentMovie);
+      socket.emit('foundMutualMovie', room, currentMovie)
     } else {
       socket.emit('acceptMovie', room, currentMovie);
       const newList: IMovie[] = [...movies];
@@ -100,16 +101,15 @@ const MovieMatch = () => {
   };
 
   const acceptWatchMovie =() => {
-    if (!bothAccept) {
-      socket.emit('otherUserAccepted', room, userName);
-    } else {
-      socket.emit('bothUsersAccepted', room, userName, matchedMovie.id);
-    };
-  };
-
+    if(!bothAccept) {
+      socket.emit('otherUserAccepted', room, userName)
+    }else {
+      socket.emit('bothUsersAccepted', room) 
+    }
+  }
   const declineWatchMovie = () => {
     dispatch(turnOffMatchedMovie());
-    socket.emit('declineWatchMovie', userName, room, matchedMovie.title);
+    socket.emit('declineWatchMovie', userName, room)
     setBothAccept(false);
   };
 

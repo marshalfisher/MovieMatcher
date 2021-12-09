@@ -1,11 +1,11 @@
 import React from 'react'
 import './ActorList.css'
-import { ICast } from '../../../../../interfaces/ActorList'
+import { Cast } from '../../../../../interfaces/ActorList'
 import {Button} from '@chakra-ui/react';
 import { useNavigate } from "react-router-dom";
 
 type Props = {
-  actor:ICast,
+  actor:Cast,
   role:string
 }
 

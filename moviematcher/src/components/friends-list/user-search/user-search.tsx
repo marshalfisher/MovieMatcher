@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import FriendIcon from '../friend-icon/friend-icon' 
-import { IUser } from '../../../../../interfaces/responses'
+import { User } from '../../../../../interfaces/responses'
 import { useAppSelector } from '../../../redux/app/hooks'
 import { selectAuth } from '../../../redux/features/modals/authSlice'
 import { selectFriendIds } from '../../../redux/features/user/friendsIdSlice'
@@ -10,6 +10,7 @@ import './user-search.css'
 import { selectLoggedInUser } from '../../../redux/features/user/loggedInUsers'
 
 const UserSearch = () => {
+<<<<<<< HEAD
 
   const [users, setUsers] = useState<IUser[]>([]);
   const [query, setQuery] = useState('');
@@ -38,6 +39,35 @@ const UserSearch = () => {
         }
       } catch (e) {
         console.error(e);
+=======
+    const [users, setUsers] = useState<User[]>([]);
+    const [query, setQuery] = useState('');
+    const accessToken = useAppSelector(selectAuth);
+    const friendIds = useAppSelector(selectFriendIds);
+    const yourId = useAppSelector(selectUserId);
+    const loggedInUsers = useAppSelector(selectLoggedInUser)
+    function handleChange (e: React.FormEvent<HTMLInputElement>) {
+      const input = e.currentTarget.value
+      setQuery(input);
+    }
+    useEffect(() => {
+      let isCancelled = false;
+      const fetchUsers = async() => {
+       let otherUsers = await ServerApiService.getAllUsers(accessToken);
+       let sortedArray:User[] = otherUsers.sort((a, b) => {
+        if(loggedInUsers.includes(a.username) && loggedInUsers.includes(b.username)) return 0
+        return loggedInUsers.includes(a.username) ? -1 : 1
+       })
+       if(!isCancelled) {
+         setUsers(sortedArray)
+       }
+      }
+      if(accessToken) {
+        fetchUsers()
+      }
+      return () => {
+        isCancelled = true;
+>>>>>>> 3d01abd3c620998113cdce4174a35a8303ce87fc
       }
     };
 
@@ -56,6 +86,7 @@ const UserSearch = () => {
     });
   };
     
+<<<<<<< HEAD
   return (
     <div className="user-search">
       <div className="search-bar-container">
@@ -70,5 +101,21 @@ const UserSearch = () => {
     </div>
   );
 };
+=======
+    return (
+        <div className="user-search">
+            <div className="search-bar-container">
+              <input className="search-bar" value={query} placeholder="Search..." onChange={handleChange}/>
+            </div>
+            <div className="user-icons"> 
+            {filterUsers().map((user:User) => {
+                if(user.id === yourId) return ''
+                return <FriendIcon key={user.id} user={user} friend={friendIds.includes(user.id)}/>
+            })}
+            </div>
+        </div>
+    )
+}
+>>>>>>> 3d01abd3c620998113cdce4174a35a8303ce87fc
 
 export default UserSearch;

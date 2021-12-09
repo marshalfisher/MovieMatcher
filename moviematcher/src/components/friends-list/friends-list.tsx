@@ -1,12 +1,13 @@
-import { useState } from 'react';
-import './friends-list.css';
-import FriendSearch from './friend-search/friend-search';
-import UserSearch from './user-search/user-search';
-import { useAppSelector } from '../../redux/app/hooks';
-import { selectAuth } from '../../redux/features/modals/authSlice';
+import React, { useState } from 'react'
+import './friends-list.css'
+import FriendSearch from './friend-search/friend-search'
+import UserSearch from './user-search/user-search'
+import { useAppSelector } from '../../redux/app/hooks'
+import { selectAuth } from '../../redux/features/modals/authSlice'
 
 const FriendsList = () => {
   
+<<<<<<< HEAD
   const auth = useAppSelector(selectAuth);
   const toggle = useAppSelector((state) => state.friendsList.value);
   const [friendsToggle, setFriendsToggle] = useState<boolean>(true);
@@ -17,10 +18,20 @@ const FriendsList = () => {
     setSearchToggle(false);
     setFriendsToggle(true);
     setFriendsBtn(true);
+=======
+  const auth = useAppSelector(selectAuth)
+  const toggle = useAppSelector((state) => state.friendsList.value)
+  const [friendsToggle, setFriendsToggle] = useState<boolean>(true)
+  const [searchToggle, setSearchToggle] = useState<boolean>(false)
+
+  function handleFriendsClick () {
+    setSearchToggle(false);
+    setFriendsToggle(true)
+>>>>>>> 3d01abd3c620998113cdce4174a35a8303ce87fc
   };
 
   function handleSearchClick () {
-    setFriendsToggle(false);
+    setFriendsToggle(false)
     setSearchToggle(true);
     setFriendsBtn(false);
   };
