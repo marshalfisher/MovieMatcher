@@ -1,7 +1,7 @@
 const axios = require('axios');
 <<<<<<< HEAD
 import { IMovie, IResults } from "../../interfaces/movieInterface";
-import {IMovieDetails} from '../../interfaces/MovieDetails'
+import { IMovieDetails} from '../../interfaces/MovieDetails'
 import { movieDetailsPlaceHolder } from '../../moviematcher/src/moviePlaceholder'
 import { IActorList } from '../../interfaces/ActorList';
 import { actorListPlaceholder } from '../../moviematcher/src/actorListPlaceholder';

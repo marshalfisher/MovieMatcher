@@ -29,6 +29,7 @@ color:grey;
 
 .buttons {
     margin: 15px;
+    display: flex;
 }
 
 .buttons button {

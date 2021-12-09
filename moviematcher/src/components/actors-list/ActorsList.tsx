@@ -25,17 +25,9 @@ const ActorsList:React.FC<Props>  = ({id}) => {
         );
         if(!isCancelled) {
           setActorList(filteredActorList);
-<<<<<<< HEAD
         }
       } catch (e) {
         console.error(e)
-=======
-          }
-      }
-      fetchMovie()
-      return () => {
-        isCancelled = true;   
->>>>>>> 3d01abd3c620998113cdce4174a35a8303ce87fc
       }
     }
 
@@ -48,18 +40,10 @@ const ActorsList:React.FC<Props>  = ({id}) => {
 
   return (
     <div className="actor-list-container">
-<<<<<<< HEAD
       <h1>Cast</h1>
       <div className="movie-list" style={{maxWidth: toggle? '83.5%' : '100%'}}>
         {actorList.map((actor:any) => <ActorThumb key={Number(actor.id)} actor={actor} role={actor.character}/>)}
       </div>
-=======
-        <h1>Cast</h1>
-  
-        <div className="movie-list" style={{maxWidth: toggle? '83.5%' : '100%'}}>
-            {actorList.map((actor:any) => <ActorThumb key={Number(actor.id)} actor={actor} role={actor.character}/>)}
-        </div>
->>>>>>> 3d01abd3c620998113cdce4174a35a8303ce87fc
     </div>
   );
 };

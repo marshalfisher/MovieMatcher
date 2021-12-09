@@ -32,7 +32,6 @@ import { setActivities } from './redux/features/user/activitiesSlice';
 <<<<<<< HEAD
 import { setUserName } from './redux/features/user/yourUserName';
 import {socket} from './socket'
-import {IFilterData} from '../../interfaces/filterFormInterface';
 import { setUserStreaming } from './redux/features/user/userStreaming';
 import StreamingServiceList from './components/streaming-services/StreamingServiceList';
 import StreamingMovies from './components/streaming-services/StreamingMovies';
